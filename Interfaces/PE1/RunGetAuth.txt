@@ -1,0 +1,1 @@
+http://<<host>>/invoke/PE1.Pub/runGetAuth?folio=<<folio>>&pv_date=<<pv_date>>&ad_date=<<ad_date>>&carrier=<<carrier>>&phone=<<phone>>&amount=<<amount>>

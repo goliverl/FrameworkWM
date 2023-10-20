@@ -1,0 +1,8 @@
+http://<<host>>/invoke/TPE.<<interface>>.Pub/request?xmlIn=
+<?xml version="1.0" encoding="UTF-8"?>
+<TPEDoc version="1.0">
+   <header application="<<application>>" operation="<<operation>>" source="<<source>>" entity="<<entity>>" folio="<<folio>>" adDate="<<adDate>>" pvDate="<<pvDate>>" operator="<<operator>>" />
+   <request>
+      <service id="<<service id>>" accountId="<<accountId>>" idClient="<<idClient>>" ticket="<<ticket>>" total="<<total>>" entryMode="<<entryMode>>" payType="<<payType>>" />
+   </request>
+</TPEDoc>

@@ -1,0 +1,412 @@
+package interfaces.ro8gas;
+
+import static org.testng.Assert.assertFalse;
+
+import java.util.HashMap;
+
+import org.testng.annotations.Test;
+
+import integrationServer.om.PakageManagment;
+import modelo.BaseExecution;
+import util.GlobalVariables;
+import utils.password.PasswordUtil;
+import utils.selenium.ChromeTest;
+import utils.selenium.SeleniumUtil;
+import utils.sql.SQLResult;
+
+public class RO8_GAS_CambiosDePrecio extends BaseExecution {
+	public String thread_id;
+	@Test(dataProvider = "data-provider")
+	public void ATC_FT_RO8_GAS_001_CambiosDePrecio(HashMap<String, String> data) throws Exception {
+		
+		/*
+		 * Utilerías
+		 *********************************************************************/
+
+		utils.sql.SQLUtil dbRms = new utils.sql.SQLUtil(GlobalVariables.DB_HOST_RMS_MEX, GlobalVariables.DB_USER_RMS_MEX,GlobalVariables.DB_PASSWORD_RMS_MEX);
+		utils.sql.SQLUtil dbLog = new utils.sql.SQLUtil(GlobalVariables.DB_HOST_FCWMLQA, GlobalVariables.DB_USER_FCWMLQA,GlobalVariables.DB_PASSWORD_FCWMLQA);
+		utils.sql.SQLUtil dbPos = new utils.sql.SQLUtil(GlobalVariables.DB_HOST_Puser, GlobalVariables.DB_USER_Puser, GlobalVariables.DB_PASSWORD_Puser);
+		utils.sql.SQLUtil dbEbs = new utils.sql.SQLUtil(GlobalVariables.DB_HOST_EBS, GlobalVariables.DB_USER_EBS,GlobalVariables.DB_PASSWORD_EBS);
+
+		/**
+		 * Variables
+		 * ******************************************************************************************
+		 * 
+		 * 
+		 */
+
+		String SelectCFG = "SELECT INTERFACE_NAME, AUTO_STATUS, ATTRIBUTE1, ATTRIBUTE2 "
+				+ " FROM WMUSER.wm_cfg_launcher " 
+				+ " WHERE interface_name = 'RO08_GAS'" 
+				+ " AND attribute1=" + "'" + data.get("plaza") + "'" 
+				+ " AND attribute2 =" + "'" + data.get("tranCode") + "'"
+				+ " AND auto_status = 'A'";// posuser
+
+		String SelectInsumos = " SELECT STORE,TRAN_DATE,TRAN_CODE,REFERENCE_3,REFERENCE_9,CR_PLAZA,ID"
+				+ " FROM fem_fif_stg" 
+				+ " WHERE tran_date >= TRUNC (SYSDATE) - 60" 
+				+ " AND cr_plaza =" + "'"+ data.get("plaza") + "'" 
+				+ " AND tran_code =" + "'" + data.get("tranCode") + "'"
+				+ " AND reference_3 IS NULL"
+				+ " AND reference_9 IS NULL";// RMS_ME
+		
+		String SelectInsumos2 = " SELECT STORE,TRAN_DATE,TRAN_CODE,REFERENCE_3,REFERENCE_9,CR_PLAZA,ID"
+				+ " FROM fem_fif_stg" 
+				+ " WHERE tran_date >= TRUNC (SYSDATE) - 60" 
+				+ " AND cr_plaza =" + "'"+ data.get("plaza") + "'" 
+				+ " AND tran_code =" + "'" + data.get("tranCode") + "'"
+				+ " AND reference_9 = '%s'";// RMS_MEX
+
+		String tdcQueryIntegrationServer = "select * from ( SELECT run_id,start_dt,status" 
+				+ " FROM WMLOG.wm_log_run"
+				+ " WHERE interface = 'RO08_GAS_CPREC'" 
+				+ " and  start_dt >= TRUNC(SYSDATE)"
+				+ " order by start_dt desc)" + " where rownum = 1";
+		
+		
+		String tdcQueryErrorId = " SELECT ERROR_ID,RUN_ID,ERROR_DATE,DESCRIPTION " 
+				+ " FROM WMLOG.WM_LOG_ERROR "
+				+ " where RUN_ID=%s"; // FCWMLQA
+
+
+		String tdcQueryStatusThread = "SELECT parent_id,thread_id,name,wm_log_thread.status,att1,att2 "
+				+ " FROM WMLOG.wm_log_thread " + " WHERE parent_id = %s"; // FCWMLQA
+		
+		String consulta5 = "SELECT RUN_ID,INTERFACE,START_DT,STATUS,SERVER "
+				+ " FROM WMLOG.WM_LOG_RUN "
+				+ " WHERE RUN_ID =%s";
+
+		String VerificacionHeader = "SELECT HEADER_ID,TRAN_CODE,TRAN_DATE,CR_PLAZA,wm_run_id"
+				+  " FROM WMUSER.WM_GL_HEADERS_GAS"
+				+  " WHERE cr_plaza =" +"'"+ data.get("plaza")+"'"
+			    +  " AND tran_code =" +"'"+ data.get("tranCode")+"'"//RMS_MEX
+				+  " AND wm_run_id ='%s'";//thread_id
+		
+
+		String ConsultaGl = " SELECT  STATUS,DATE_CREATED,USER_JE_CATEGORY_NAME,USER_CURRENCY_CONVERSION_TYPE "
+							+ " FROM GL_INTERFACE" //ebs
+							+ " WHERE reference6 ='%s'";//Reference_3
+		
+		 String VerificacionR3R9 = "SELECT STORE,TRAN_DATE,TRAN_CODE,REFERENCE_3,REFERENCE_9,CR_PLAZA,ID" + 
+		 		" FROM fem_fif_stg" + 
+		 		" WHERE tran_date >= TRUNC (SYSDATE) - 60" + 
+		 		" AND cr_plaza = " +"'"+ data.get("plaza")+"'" + 
+		 		" AND tran_code = "  +"'"+ data.get("tranCode")+"'" + 
+		 		" AND reference_9 = '%s'" + //header_id
+		 		" AND reference_3 = '%s'";//REF3
+		 
+		 String VerificarLinesGas= "SELECT HEADER_ID, NET_RETAIL, VAT_CODE_RETAIL, TOTAL_COST, VAT_RETAIL" + 
+					" FROM WMUSER.wm_gl_lines_gas" + 
+					" where header_id = '%s'";//header_id RMS_MEX
+		
+		
+		String status = "S";
+
+		// utileria
+		SeleniumUtil u = new SeleniumUtil(new ChromeTest(), true);
+		PakageManagment pok = new PakageManagment(u, testCase);
+		
+		
+		String user = data.get("user");
+		String ps = PasswordUtil.decryptPassword(data.get("ps"));
+		String server = data.get("server");
+		String con = "http://" + user + ":" + ps + "@" + server;
+		String searchedStatus = "R";
+		String run_id;
+		
+
+		/**
+		 * 
+		 * **********************************Pasos del caso de Prueba * *****************************************
+		 * 
+		 * 
+		 */
+		testCase.setProject_Name("Interfaces WebMethods");
+
+		
+//		Paso 1	**********************************************	
+		addStep("Verificar parametros configurados en la WMUSER.WM_CFG_LAUNCHER para ejecución AUTOMATICA");
+
+		System.out.println(GlobalVariables.DB_HOST_Puser);
+
+		System.out.println(SelectCFG);
+		
+		SQLResult result = executeQuery(dbPos, SelectCFG);
+		boolean av = result.isEmpty();
+
+		
+		if (!av) {
+
+			testCase.addQueryEvidenceCurrentStep(result);  
+
+		}
+
+		System.out.println(av);
+
+		assertFalse(av, "No se obtiene informacion de la consulta");
+
+//Paso 2	**********************************************	
+		addStep("Desmarcar información para procesar REFERENCE_3 = NULL y REFERENCE_9 = NULL en la tabla FEM_FIF_STG.");
+
+		System.out.println(GlobalVariables.DB_HOST_RMS_MEX);
+
+		System.out.println(SelectInsumos);
+		
+		SQLResult result2 = executeQuery(dbRms, SelectInsumos);
+
+		boolean SC = result2.isEmpty();
+
+		if (!SC) {
+
+			testCase.addQueryEvidenceCurrentStep(result2);
+		}
+
+		System.out.println(SC);
+
+		assertFalse(SC, "No se obtiene informacion de la consulta");
+
+//Paso 3  ****************** *******************************
+		addStep("Ejecutar el servicio de la interface: RO8_GAS.Pub:runCPREC.. Solicitando la ejecución del job: RO8_GAS.Pub:runCPREC..");
+
+		String contra = "http://" + user + ":" + ps + "@" + server + ":5555";
+		u.get(contra);
+
+		pok.runIntefaceWmWithInput(data.get("interfase"), data.get("servicio"),"AUTO","executionType");
+		SQLResult result5 = executeQuery(dbLog, tdcQueryIntegrationServer);
+		
+		
+		String status1 = result5.getData(0, "STATUS");
+		run_id = result5.getData(0, "RUN_ID");
+
+		boolean valuesStatus = status1.equals(searchedStatus);// Valida si se encuentra en estatus R
+		while (valuesStatus) {
+			result5 = executeQuery(dbLog, tdcQueryIntegrationServer);
+			status1 = result5.getData(0, "STATUS");
+			run_id = result5.getData(0, "RUN_ID");
+			
+
+			u.hardWait(2);
+
+		}
+		boolean successRun = status1.equals(status);// Valida si se encuentra en estatus S
+		if (!successRun) {
+
+			String error = String.format(tdcQueryErrorId, run_id);
+			SQLResult result3 = executeQuery(dbLog, error);
+
+			boolean emptyError = result3.isEmpty();
+			
+
+			if (!emptyError) {
+
+				testCase.addTextEvidenceCurrentStep(
+						"Se encontró un error en la ejecución de la interfaz en la tabla WM_LOG_ERROR");
+
+				testCase.addQueryEvidenceCurrentStep(result3);
+
+			}
+		}
+
+//Paso 4	************************
+	    
+	    
+	    addStep("Verificar el estatus con el cual fue terminada la ejecución de la interface en la tabla WM_LOG_RUN del usuario WMLOG.");
+		
+		//String run = "2159857851";
+		System.out.println(GlobalVariables.DB_HOST_FCWMLQA);
+		String verificacionInterface = String.format(consulta5, run_id);
+		SQLResult paso4 = executeQuery(dbLog, verificacionInterface);
+		System.out.println(verificacionInterface);
+
+
+
+		boolean av5 = paso4.isEmpty();
+		
+		if (!av5) {
+
+			testCase.addQueryEvidenceCurrentStep(paso4);
+			
+		} 
+
+		System.out.println(av5);
+
+		
+		assertFalse(av5, "No se obtiene informacion de la consulta");
+//		
+
+//	Paso 5  *************************************************
+	addStep("Validar que se inserte el detalle de la ejecución de los Threads lanzados por la interface en la tabla WM_LOG_THREAD con STATUS = 'S'");
+	
+	System.out.println(GlobalVariables.DB_HOST_FCWMLQA);
+	String consultaTemp6 = String.format(tdcQueryStatusThread, run_id);
+	SQLResult paso5 = executeQuery(dbLog, consultaTemp6);
+	
+	System.out.println(consultaTemp6);
+	String estatusThread = paso5.getData(0, "Status");
+
+	boolean SR = estatusThread.equals(status);
+	SR = !SR;
+	
+	if (!SR) {
+
+		testCase.addQueryEvidenceCurrentStep(paso5);
+		
+	} 
+
+	System.out.println(SR);
+
+	
+	assertFalse(SR, "No se obtiene informacion de la consulta");
+
+//Paso 6 *********************************
+
+		addStep("Verificar que los datos sean insertados en la tabla WM_GL_HEADERS_GAS de RETEK.");
+		
+		System.out.println(GlobalVariables.DB_HOST_RMS_MEX);
+		String consultafor="";
+		SQLResult resultfor;
+		
+		for(int i = 0; i < paso5.getRowCount(); i++) {
+		String p = paso5.getData(i, "THREAD_ID");
+		System.out.println(p);
+		consultafor = String.format(VerificacionHeader, p);
+		resultfor = executeQuery(dbRms, consultafor);
+		
+		boolean foav = resultfor.isEmpty();
+		
+		if (!foav) {
+
+			thread_id = paso5.getData(i, "THREAD_ID");
+
+		}
+	
+		}
+		
+		String consulta = String.format(VerificacionHeader, thread_id);
+		System.out.println(consulta);
+		SQLResult result8 = executeQuery(dbRms, consulta);
+		
+		boolean av7 = result8.isEmpty();
+		String header_id = result8.getData(0, "HEADER_ID");
+		
+		if (!av7) {
+
+			testCase.addQueryEvidenceCurrentStep(result8);
+
+		}
+
+		System.out.println(av7);
+
+		assertFalse(av7, "No se obtiene informacion de la consulta");
+
+		//Paso 7 *********************************
+		
+				addStep("Verificar la insercion de lineas en la tabla GL_INTERFACE de ORAFIN.");
+				System.out.println(GlobalVariables.DB_HOST_EBS);
+				
+				String RE3Format = String.format(SelectInsumos2, header_id);
+				result2 = executeQuery(dbRms, RE3Format);
+				String R3 = result2.getData(0, "REFERENCE_3");
+				
+				String ConsultaGlFormat = String.format(ConsultaGl, R3);
+				System.out.println(ConsultaGlFormat);
+				
+				SQLResult GL = executeQuery(dbEbs, ConsultaGlFormat);
+				
+
+				boolean av8 = GL.isEmpty();
+
+				if (!av8) {
+
+					testCase.addQueryEvidenceCurrentStep(GL);
+
+				}
+
+				System.out.println(av8);
+
+				assertFalse(av8, "No se obtiene informacion de la consulta");
+		
+		//Paso 8 *********************************
+		
+		addStep("Verificar la actualizacion de los campos: REFERENCE_3 y REFERENCE_9 en la tabla FEM_FIF_STG de RETEK.");
+		
+		System.out.println(GlobalVariables.DB_HOST_RMS_MEX);
+		String VerificacionR3R9Format = String.format(VerificacionR3R9, header_id,R3);
+		SQLResult VeriR3R9 = executeQuery(dbRms, VerificacionR3R9Format);
+		System.out.println(VerificacionR3R9Format);
+		
+		boolean av6 = VeriR3R9.isEmpty();
+
+		if (!av6) {
+
+			testCase.addQueryEvidenceCurrentStep(VeriR3R9);
+
+		}
+
+		System.out.println(av6);
+
+		assertFalse(av6, "No se obtiene informacion de la consulta");
+
+	    
+////	Paso 9  *************************************************
+	addStep("Verificar la inserción de lineas en la tabla WM_GL_LINES_GAS.");
+	
+	System.out.println(GlobalVariables.DB_HOST_RMS_MEX);
+	String linesGasFormat = String.format(VerificarLinesGas, header_id);
+	
+	System.out.println(linesGasFormat);
+	SQLResult linesGas = executeQuery(dbRms, linesGasFormat);
+
+	
+	
+	boolean av9 = linesGas.isEmpty();
+
+	
+	if (!av9) {
+
+		testCase.addQueryEvidenceCurrentStep(linesGas);
+
+	}
+
+	System.out.println(av9);
+
+  assertFalse(av9, "No se obtiene informacion de la consulta");
+	}
+
+	@Override
+	public void beforeTest() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String setPrerequisites() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String setTestDescription() {
+		// TODO Auto-generated method stub
+		return " Verificar proceso de interface CAMBIOS DE PRECIO ";
+	}
+
+	@Override
+	public String setTestDesigner() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String setTestFullName() {
+		// TODO Auto-generated method stub
+		return "ATC_FT_RO8_GAS_001_CambiosDePrecio";
+	}
+
+	@Override
+	public String setTestInstanceID() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

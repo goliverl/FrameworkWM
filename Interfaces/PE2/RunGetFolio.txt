@@ -1,0 +1,1 @@
+http://<<host>>/invoke/PE2.Pub/runGetFolio?plaza=<<plaza>>&tienda=<<tienda>>&caja=<<caja>>&type=<<type>>

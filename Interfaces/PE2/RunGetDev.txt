@@ -1,0 +1,2 @@
+http://<<host>>/invoke/PE2.Pub/runGetDev?folio=<<folio>>&pvDate=<<pvDate>>&adDate=<<adDate>>&adAuthDate=<<adAuthDate>>&cardNo=<<cardNo>>&entryMode=<<entryMode>>&track2=<<track2>>&swAuth=<<swAuth>>&amount=<<amount>>
+

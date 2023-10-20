@@ -1,0 +1,9 @@
+http://<<host>>/invoke/PE2V2.Pub/runGetInitialization?folio=<<folio>>&
+plaza=<<plaza>>&
+tienda=<<tienda>>&
+caja=<<caja>>&
+tokenES=<<tokenES>>&
+tokenEW=<<tokenEW>>&
+pvDate=<<pvDate>>&
+adDate=<<adDate>>&
+tokenC4=<<tokenC4>>

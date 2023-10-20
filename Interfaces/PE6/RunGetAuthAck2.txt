@@ -1,0 +1,1 @@
+http://<<host>>/invoke/PE6.Pub/runGetAuthAck?folio=<<folio>>&creationDate=<<creationDate>>&ack=<<ack>>&track2=<<track2>>

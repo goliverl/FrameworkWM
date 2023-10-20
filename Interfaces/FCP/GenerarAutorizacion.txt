@@ -1,0 +1,9 @@
+http://<<host>>/invoke/TPE.FCP.Pub/request?xmlIn=<?xml version="1.0" encoding="UTF-8"?>
+<TPEDoc version="1.0">
+  <header application="<<application>>" entity="<<entity>>" operation="<<operation>>" source="<<source>>" folio="<<folio>>" creationDate="<<creationdate>>" adDate="<<ad_date>>" pvDate="<<pv_date>>" pvTicket="<<pvTicket>>" operator="<<operator>>"/>
+  <request>
+    <card cardNo="<<cardNo>>" activationType="<<activationType>>" entryMode="<<entryMode>>">
+      <client nombre="<<nombre>>" apellidoPaterno="<<apellidoPaterno>>" apellidoMaterno="<<apellidoMaterno>>" fechaNacimiento="<<fechaNacimiento>>" calle="<<calle>>" numExt="<<numext>>" numInt="<<numint>>" colonia="<<colonia>>" delegacionMunicipio="<<delegacionmunicipio>>" ciudadEstado="<<ciudadestado>>" codigoPostal="<<codigopostal>>" genero="<<genero>>" entidadFederativa="<<entidadfederativa>>" tipoIdentificacion="<<tipodeidentificacion>>" numeroIdentificacion="<<numerodeidentificacion>>" celular="<<celular>>" promoCel="<<promocel>>"/>
+    </card>
+  </request>
+</TPEDoc>

@@ -1,0 +1,21 @@
+8100000099,Recarga no exitosa,Telcel
+8100000001,Recarga exitosa,Telcel
+8110000001,Telefono no valido,Telcel
+8110000002,Destino no disponible (No se puede abonar),Telcel
+8110000003,Monto no valido,Telcel
+8110000004,Teléfono no susceptible de abono,Telcel
+8110000005,Existió un error indeterminado en el proceso,Telcel
+8110000006,Mantenimiento Telcel en curso,Telcel
+8110000007,Rechazo por tabla de transacciones llena,Telcel
+8110000008,Timeout Emisor,Telcel
+8110000009,Autorizador no disponible,Telcel
+8100000099,Recarga no exitosa,Movistar
+8100000001,Recarga exitosa,Movistar
+8110000001,Telefono no valido,Movistar
+8110000003,Monto no valido,Movistar
+8110000005,Existió un error indeterminado en el proceso,Movistar
+8110000013,Monto invalido,Movistar
+8110000014,Paquete Invalido,Movistar
+8110000030,Error de formato,Movistar
+8110000051,No hay crédito disponible,Movistar
+8110000092,Institución financiera no encontrada,Movistar

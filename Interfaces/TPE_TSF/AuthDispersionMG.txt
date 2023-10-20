@@ -1,0 +1,32 @@
+http://<<host>>/invoke/TPE.TSF.Pub/request?xmlIn=
+<?xml version="1.0" encoding="UTF-8"?>
+<TPEDoc version="1.0">
+   <header 
+	plaza="<<plaza>>" 
+	tienda="<<tienda>>"
+	caja="<<caja>>" 
+	application="<<application>>"  
+	folio="<<folio>>" 
+	pvDate="<<pvDate>>" 
+	adDate="<<adDate>>"
+	source="<<source>>"
+	creationDate="<<creationDate>>" 
+	operation="<<operation>>" 
+	entity="<<entity>>" 
+	operator="<<operator>>" />
+   <request>
+      <transfer agentCheckAmount="<<agentCheckAmount>>" amount="<<amount>>" cashAmount="<<cashAmount>>" commission="<<commission>>" countryCode="<<countryCode>>" eAmount="<<eAmount>>" 
+		ePayment="<<ePayment>>" ePaymentSaldazo="<<ePaymentSaldazo>>" isNewSaldazo="<<isNewSaldazo>>" marca="<<marca>>" new_mtcn="" originalReference="<<originalReference>>" 
+		originalSendFee="<<originalSendFee>>" originatingAmount="<<originatingAmount>>" originatingCountry="<<originatingCountry>>" originatingCurrency="<<originatingCurrency>>" 
+		paymentCurrency="<<paymentCurrency>>" paymentTax="" paymentType="<<paymentType>>" proveedor="<<proveedor>>" saldazoCharge="<<saldazoCharge>>" transferID="<<transferID>>" 
+		transferNo="<<transferNo>>">
+         <operator apPaternoOperador="<<apPaternoOperador>>" idOperador="<<idOperador>>" nombreOperador="<<nombreOperador>>" tipoNomOperador="<<tipoNomOperador>>" />
+         <client>
+            <receiver apellidoMaterno="<<apellidoMaterno>>" apellidoPaterno="<<apellidoPaterno>>" nombre="<<nombre>>" />
+            <compliance calleNum="<<calleNum>>" ciudad="<<ciudad>>" codigoPostal="<<codigoPostal>>" colonia="<<colonia>>" estado="<<estado>>" estadoId="<<estadoId>>" 
+		expDateFirstId="" expiracionFirstId="<<expiracionFirstId>>" fechaNacimiento="<<fechaNacimiento>>" firstId="<<firstId>>" firstIdnum="<<firstIdnum>>" pais="<<pais>>" 
+		paisId="<<paisId>>" paisNacimiento="<<paisNacimiento>>" paisNacionalidad="<<paisNacionalidad>>" telefono="<<telefono>>" />
+         </client>
+      </transfer>
+   </request>
+</TPEDoc>

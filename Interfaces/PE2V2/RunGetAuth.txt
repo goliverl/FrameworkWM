@@ -1,0 +1,17 @@
+http://<<host>>/invoke/PE2V2.Pub/runGetAuth?folio=<<folio>>&
+creationDate=<<creationDate>>&
+pvDate=<<pvDate>>&
+adDate=<<adDate>>&
+cardNo=<<cardNo>>&
+entryMode=<<entryMode>>&
+seqNo=<<seqNo>>&
+cvv=<<cvv>>&
+track2=<<track2>>&
+promType=<<promType>>&
+amount=<<amount>>&
+f55=<<f55>>&
+operator=<<operator>>&
+accountType=<<accountType>>&
+serviceId=<<serviceId>>&
+tokenC4=<<tokenC4>>&
+tokenCZ=<<tokenCZ>>

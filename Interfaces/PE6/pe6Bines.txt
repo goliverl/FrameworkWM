@@ -1,0 +1,8 @@
+http://<<host>>/invoke/PE6.Pub/runGetQuery?
+cardNo=<<cardNo>>
+&binCodeList=<<binCodeList>>
+&plaza=<<plaza>>
+&tienda=<<tienda>>
+&promType=<<promType>>
+&service=<<service>>
+

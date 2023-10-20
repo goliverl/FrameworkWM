@@ -1,0 +1,39 @@
+http://<<host>>/invoke/TPE.TSF.Pub/request?xmlIn=
+<?xml version="1.0" encoding="UTF-8"?>
+<TPEDoc version="1.0">
+   <header application="<<application>>" 
+	entity="<<entity>>" 
+	operation="<<operation>>" 
+	source="<<source>>" 
+	plaza="<<plaza>>" 
+	tienda="<<tienda>>" 
+	caja="<<caja>>" 
+	adDate="<<adDate>>" 
+	pvDate="<<pvDate>>" 
+	folio="<<folio>>" 
+	creationDate="<<creationDate>>" 
+	operator="<<operator>>" />
+   <request>
+      <transfer 
+		originalReference="<<originalReference>>" transferNo="<<transferNo>>" proveedor="<<proveedor>>" marca="<<marca>>" 
+		payStatus="<<payStatus>>" estatus="<<estatus>>" countryCode="<<countryCode>>" currencyCode="<<currencyCode>>" 
+		originatingCurrencyCode="<<originatingCurrencyCode>>" originatingCountryCode="<<originatingCountryCode>>" totalAmount="<<totalAmount>>" 
+		amount="<<amount>>" principalAmount="<<principalAmount>>" charges="<<charges>>" moneyTransferKey="<<moneyTransferKey>>" new_mtcn="<<new_mtcn>>" 
+		filingDate="<<filingDate>>" originatingCity="" originatingState="" paymentId="<<paymentId>>" ePayment="<<ePayment>>" 
+		ePaymentSaldazo="<<ePaymentSaldazo>>" isNewSaldazo="<<isNewSaldazo>>" saldazoCharge="<<saldazoCharge>>" 
+		commission="<<commission>>" cashAmount="<<cashAmount>>" eAmount="<<eAmount>>">
+         <operator 
+		idOperador="<<idOperador>>" tipoNomOperador="<<tipoNomOperador>>" nombreOperador="<<nombreOperador>>" 
+		apPaternoOperador="<<apPaternoOperador>>" apMaternoOperador="<<apMaternoOperador>>" />
+         <client>
+            <compliance 
+		firstId="<<firstId>>" firstIdnum="<<firstIdnum>>" paisId="<<paisId>>" expDateFirstId="<<expDateFirstId>>" 
+		fechaNacimiento="<<fechaNacimiento>>" calleNum="<<calleNum>>" colonia="<<colonia>>" ciudad="<<ciudad>>" estado="<<estado>>" 
+		codigoPostal="<<codigoPostal>>" pais="<<pais>>" telefono="<<telefono>>" paisNacimiento="<<paisNacimiento>>" 
+		paisNacionalidad="<<paisNacionalidad>>" expiracionFirstId="<<expiracionFirstId>>" />
+            <receiver 
+		tipoNombre="<<tipoNombre>>" nombre="<<nombre>>" apellidoPaterno="<<apellidoPaterno>>" apellidoMaterno="<<apellidoMaterno>>" />
+         </client>
+      </transfer>
+   </request>
+</TPEDoc>

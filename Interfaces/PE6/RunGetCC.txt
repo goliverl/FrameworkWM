@@ -1,0 +1,7 @@
+http://<<host>>/invoke/PE6.Pub/runGetCC?
+application=
+&operation=
+&folio=<<folio>>
+&track2=
+&cvv=
+&creationDate=<<creationDate>>

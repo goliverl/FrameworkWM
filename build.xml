@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="compile" name="ScriptRunner">
+              	<property name="target" value="1.8"/>
+              	    <property name="source" value="1.8"/>
+              	<path id="classpath">
+              	    <fileset dir="${basedir}\lib">
+              	        <include name="**/*.jar" />
+              	    </fileset>
+              	</path>
+              	<target name="clean">
+              	        <delete dir="${basedir}\bin"/>
+              	    </target>
+              	<target depends="clean" name="compile">
+              	        <mkdir dir="${basedir}\bin"/>
+              	        <javac fork="yes" srcdir="${basedir}\src" destdir="${basedir}\bin" includeantruntime="false">
+              	        	<compilerarg value="-Xlint:unchecked" />
+              	        	<classpath refid="classpath"/>              	        
+              	        </javac>
+              	    </target>
+</project>

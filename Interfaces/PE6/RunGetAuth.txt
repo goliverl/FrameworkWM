@@ -1,0 +1,1 @@
+http://<<host>>/invoke/PE6.Pub/runGetAuth?folio=<<folio>>&creationDate=<<creationDate>>&pvDate=<<pvDate>>&adDate=<<adDate>>&cardNo=<<cardNo>>&entryMode=<<entryMode>>&promType=<<promType>>&amount=<<amount>>&operator=<<operator>>&serviceId=<<serviceId>>&accountType=<<accountType>>&accountNo=<<accountNo>>&bankId=<<bankId>>&track2=<<track2>>

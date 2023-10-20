@@ -1,0 +1,1 @@
+http://<<host>>/invoke/PE2.Pub/runGetDevAck?folio=<<folio>>&ack=<<ack>>&track2=<<cardNo>>

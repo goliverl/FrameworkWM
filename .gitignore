@@ -1,0 +1,19 @@
+/target/
+/Output/
+/test-output/**
+
+### Excel Temporal Files ###
+~$*
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders

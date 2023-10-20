@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+	<test name="Test - Pruebas">
+		<classes>
+			<class name="interfaces.ct1.CT1_Actualizar_a_M_Reintentos_Excedidos_runBuzon" />
+			<class name="interfaces.pr8.PR8ValidacionEnvioCatalogos" />
+			<class name="interfaces.ps2.Ps2_ValidarInsercionDeErrorEnXxse_Transaction_Error" />
+
+		</classes>
+	</test>
+</suite>

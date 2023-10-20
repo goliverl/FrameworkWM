@@ -1,0 +1,8 @@
+http://<<host>>/invoke/TPE.FCP.Pub/request?xmlIn=<?xml version="1.0" encoding="UTF-8"?>
+<TPEDoc version="1.0">
+<header application="<<application>>" entity="<<entity>>" operation="<<operation>>" folio="<<folio>>" source="<<source>>" plaza="<<plaza>>" tienda="<<tienda>>" caja="<<caja>>" adDate="<<ad_date>>" pvDate="<<pv_date>>"/>
+<request>
+<card id="<<id>>" emissionId="<<emissionId>>" barCode="<<barCode>>"/>
+<promotion id="<<promid>>" ticket="<<ticket>>" payDate="<<payDate>>" hour="<<hour>>" qty="<<qty>>" version="<<version>>"/>
+</request>
+</TPEDoc>
