@@ -1,0 +1,31 @@
+name: TestNG Tests
+
+on:
+  push:
+    branches:
+      - main # Cambia esto al nombre de tu rama principal si es diferente
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+
+    - name: Install TestNG
+      run: |
+        curl -o testng.jar https://repo1.maven.org/maven2/org/testng/testng/7.3.0/testng-7.3.0.jar
+        echo 'testng.classpath=lib/testng-7.3.0.jar' > testng.properties
+      working-directory: ${{ github.workspace }}
+
+    - name: Compile and Run Tests
+      run: |
+        javac -cp .:lib/* src/test/java/YourTestFile.java
+        java -cp .:lib/*:testng.jar org.testng.TestNG testng.xml
+      working-directory: ${{ github.workspace }}
